@@ -19,7 +19,6 @@ const VerifyLoginUser = async (req, res, next) => {
       res.locals.loggedInUser = await EmpSchema.findById(user_id);
       const user = res.locals.loggedInUser;
       console.log("Welcome ", user.first_name);
-      res.json("Welcome Login User ");
       next();
     } catch (error) {
       console.log("Token not valid");

@@ -44,6 +44,7 @@ class PermessionFunc {
 
     this.updateUser = async (req, res, next) => {
       if (res.locals.loggedInUser.role===roles.Admin||res.locals.loggedInUser.role===roles.RegularUser){
+        
       try {
         const { role } = req.body;
         const userId = req.params.userId;

@@ -2,7 +2,7 @@ import EmpSchema from "../Models/Schema.mjs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import {} from "dotenv/config";
-
+const salt=10;
 class EmployeeFunc {
   constructor() {
     //register Employee
@@ -10,12 +10,13 @@ class EmployeeFunc {
       try {
         // Get user input
         const { first_name, last_name, email, password, role } = req.body;
-
+        
         // Validate user input
         if (!(email && password && first_name && last_name && role)) {
+          
           res.status(400).send("All input is required");
         }
-
+        console.log("hello");
         // check if user already exist
         // Validate if user exist in our database
         const oldemployee = await EmpSchema.findOne({ email });
@@ -25,7 +26,8 @@ class EmployeeFunc {
         }
 
         //Encrypt user password
-        const encryptedPassword = await bcrypt.hash(password, 10);
+        const encryptedPassword = await bcrypt.hash(password, 10,salt);
+        
 
         // Create user in our database
         const user = await EmpSchema.create({
@@ -33,7 +35,7 @@ class EmployeeFunc {
           last_name,
           email: email.toLowerCase(),
           password: encryptedPassword,
-          role: role || "guest",
+          role: role ,
         });
 
         // Create token
