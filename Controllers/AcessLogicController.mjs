@@ -43,6 +43,7 @@ class PermessionFunc {
     };
 
     this.updateUser = async (req, res, next) => {
+      if (res.locals.loggedInUser.role===roles.Admin||res.locals.loggedInUser.role===roles.RegularUser){
       try {
         const { role } = req.body;
         const userId = req.params.userId;
@@ -55,10 +56,15 @@ class PermessionFunc {
         });
       } catch (error) {
         next(error);
+      }}else{
+        console.log("Sorry guest u have no access to update your data");
+      return res.json({
+         message: "no acess",  });
       }
     };
 
     this.deleteUser = async (req, res, next) => {
+      if (res.locals.loggedInUser.role===roles.Admin){
       try {
         const userId = req.params.userId;
         await User.findByIdAndDelete(userId);
@@ -70,7 +76,14 @@ class PermessionFunc {
       } catch (error) {
         next(error);
       }
+    }else{
+      console.log("you have no access to Delete data");
+      return res.json({
+         message: "no acess",  });
+    }
+
     };
   }
+  
 }
 export default new PermessionFunc();

@@ -14,15 +14,22 @@ router.route("/Login").post(Funccontroller.LoginEmployee);
 //get All
 router
   .route("/GetAcessToAllRecord")
-  .get(
-    Acess.VerifyLoginUser,
-    LGController.getUsers
-  );
+  .get(Acess.VerifyLoginUser, LGController.getUsers);
 //get by id
-router.get("/Get/:id", Acess.VerifyLoginUser, Acess.authorize(),LGController.getUser);
+router.get(
+  "/Get/:id",
+  Acess.VerifyLoginUser,
+  Acess.authorize(),
+  LGController.getUser
+);
 
-router.put("/Update/:id", Acess.VerifyLoginUser, Acess.authorize);
+router.put(
+  "/Update/:id",
+  Acess.VerifyLoginUser,
+  Acess.authorize(),
+  LGController.updateUser
+);
 
-router.delete("/Delete/:id", Acess.VerifyLoginUser, Acess.authorize);
+router.delete("/Delete/:id", Acess.VerifyLoginUser, LGController.deleteUser);
 
 export default router;
