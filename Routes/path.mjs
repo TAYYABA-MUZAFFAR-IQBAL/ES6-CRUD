@@ -1,40 +1,28 @@
 import express from "express";
+// import verify from "jsonwebtoken";
 var router = express.Router();
+import roles from "../helper.mjs";
 import Funccontroller from "../Controllers/LogicSetterControllers.mjs";
-import Verify from "../Middlewares/AuthMiddleware.mjs";
+import Acess from "../Middlewares/RoleAccessMiddleware.mjs";
+import LGController from "../Controllers/AcessLogicController.mjs";
 
-//register new employee route
+//paths detail
+// register new employee route
 router.route("/Signup").post(Funccontroller.registerEmployee);
 //login route
 router.route("/Login").post(Funccontroller.LoginEmployee);
-//get all employess rote
+//get All
 router
   .route("/GetAcessToAllRecord")
   .get(
-    [Verify.VerifyLoginUser, Verify.checkIsAdmin],
-    Funccontroller.GetAllEmployee
+    Acess.VerifyLoginUser,
+    LGController.getUsers
   );
+//get by id
+router.get("/Get/:id", Acess.VerifyLoginUser, Acess.authorize(),LGController.getUser);
 
-//get employee by id route
-router
-  .route("/Get/:id")
-  .get(
-    [Verify.VerifyLoginUser, Verify.checkIsAdmin],
-    Funccontroller.GetEmployeeById
-  );
-//update route
-router
-  .route("/Update/:id")
-  .put(
-    [Verify.VerifyLoginUser, Verify.checkIsAdmin],
-    Funccontroller.UpdateEmployee
-  );
-//delete route
-router
-  .route("/Delete/:id")
-  .delete(
-    [Verify.VerifyLoginUser, Verify.checkIsAdmin],
-    Funccontroller.DeleteEmployee
-  );
+router.put("/Update/:id", Acess.VerifyLoginUser, Acess.authorize);
+
+router.delete("/Delete/:id", Acess.VerifyLoginUser, Acess.authorize);
 
 export default router;
